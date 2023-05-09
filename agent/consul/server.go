@@ -1980,6 +1980,7 @@ func (s *Server) hcpServerStatus(deps Deps) hcp.StatusCallback {
 		status.LanAddress = s.config.RPCAdvertise.IP.String()
 		status.GossipPort = s.config.SerfLANConfig.MemberlistConfig.AdvertisePort
 		status.RPCPort = s.config.RPCAddr.Port
+		status.Datacenter = s.config.Datacenter
 
 		tlsCert := s.tlsConfigurator.Cert()
 		if tlsCert != nil {
@@ -2020,6 +2021,8 @@ func (s *Server) hcpServerStatus(deps Deps) hcp.StatusCallback {
 		if deps.HCP.Provider != nil {
 			status.ScadaStatus = deps.HCP.Provider.SessionStatus()
 		}
+
+		status.ACL.Enabled = s.config.ACLsEnabled
 
 		return status, nil
 	}
